@@ -2,12 +2,14 @@
 name = "fast-zero"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Arthur Ferreira Silva"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.11.*"
-fastapi = "^0.115.4"
+fastapi = {extras = ["standard"], version = "^0.115.4"}
+sqlalchemy = "^2.0.36"
+pydantic-settings = "^2.6.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.7.2"
@@ -32,7 +34,7 @@ preview = true
 quote-style = 'single'
 
 [tool.taskipy.tasks]
-run = 'fastapi dev fast_zero:app.py'
+run = 'fastapi dev fast_zero/app.py'
 pre_test = 'task lint'
 test = 'pytest -s -x --cov=fast_zero -vv'
 post_test = 'coverage html'
