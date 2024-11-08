@@ -43,6 +43,7 @@ def update_user(user_id: int, user: UserSchema):
 
     return user_with_id
 
+
 @app.delete('/users/{user_id}', response_model=UserPublic)
 def delete_user(user_id: int):
     if user_id < 1 or user_id >= len(database):
