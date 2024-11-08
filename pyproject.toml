@@ -11,6 +11,8 @@ fastapi = {extras = ["standard"], version = "^0.115.4"}
 sqlalchemy = "^2.0.36"
 pydantic-settings = "^2.6.1"
 alembic = "^1.14.0"
+factory-boy = "^3.3.1"
+faker = "^30.8.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.7.2"
@@ -41,6 +43,7 @@ test = 'pytest -s -x --cov=fast_zero -vv'
 post_test = 'coverage html'
 lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
+datagen = 'python -m fast_zero.datagen'
 
 [build-system]
 requires = ["poetry-core"]

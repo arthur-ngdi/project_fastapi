@@ -17,4 +17,8 @@ class User:
     created_at: Mapped[datetime] = mapped_column(
         init=False, server_default=func.now()
     )
-    updated_at: Mapped[datetime] = mapped_column(init=False, onupdate=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        init=False,
+        server_onupdate=func.now(),
+        server_default=func.now()
+    )
