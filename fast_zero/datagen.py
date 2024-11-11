@@ -1,11 +1,11 @@
-import factory
+import factory  # pragma: no cover
 
-from fast_zero.database import get_session
-from fast_zero.models import User
+from fast_zero.database import get_session  # pragma: no cover
+from fast_zero.models import User  # pragma: no cover
 
 
-class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
-    class Meta:
+class UserFactory(factory.alchemy.SQLAlchemyModelFactory):  # pragma: no cover
+    class Meta:  # pragma: no cover
         model = User
 
     username = factory.Faker('user_name')
@@ -14,11 +14,11 @@ class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
 
 
 # Criar 10 usuários e salvá-los no banco de dados
-with next(get_session()) as session:
+with next(get_session()) as session:  # pragma: no cover
     # Temporariamente defina a sessão no `Meta`
     UserFactory._meta.sqlalchemy_session = session
-    for _ in range(10):
+    for _ in range(10):  # pragma: no cover
         UserFactory()
-    # Remova a sessão após o uso (opcional)
+
     session.commit()
     UserFactory._meta.sqlalchemy_session = None
