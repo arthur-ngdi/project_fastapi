@@ -37,18 +37,21 @@ def test_read_all_users(client):
 def test_read_all_users_with_user(client, user):
     user_schema = UserPublic.model_validate(user).model_dump()
     response = client.get('/users/')
+    print(type(user_schema))
 
     assert response.json() == {'users': [user_schema]}
+    # assert response.json() == user_schema
 
 
-def test_update_user(client, user):
+def test_update_user(client, user, token):
     response = client.put(
-        '/users/1',
+        f'/users/{user.id}',
+        headers={'Authorization': f'Bearer {token}'},
         json={
-            'password': 'test12344',
+            'password': 'test1234',
             'username': 'testNEWusername',
             'email': 'testnew.email@test.com',
-            'id': 1,
+            'id': user.id,
         },
     )
 
@@ -63,24 +66,11 @@ def test_update_user(client, user):
     }
 
 
-""" def test_fail_to_update_user(client, user):
-    response = client.put(
-        '/users/6',
-        json={
-            'password': 'test12344',
-            'username': 'testNEWusername',
-            'email': 'testnew.email@test.com',
-            'id': 1,
-        },
+def test_delete_user(client, user, token):
+    response = client.delete(
+        f'/users/{user.id}',
+        headers={'Authorization': f'Bearer {token}'},
     )
-
-    # Validar o status code
-    assert response.status_code == HTTPStatus.NOT_FOUND
-    assert response.json() == {'detail': 'User Not Found'} """
-
-
-def test_delete_user(client, user):
-    response = client.delete('/users/1')
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {'message': 'User deleted'}
@@ -131,3 +121,23 @@ def test_get_user(client, user):
         'email': user.email,
         'id': user.id,
     }
+
+
+def test_get_token(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': user.password},
+    )
+    token = response.json()
+
+    assert response.status_code == HTTPStatus.OK
+    assert token['token_type'] == 'Bearer'
+    assert 'access_token' in token
+
+def test_invalid_token(client):
+    response = client.delete(
+        '/users/1', headers={'Authorization': 'Bearer token-invalido'}
+    )
+
+    assert response.status_code ==HTTPStatus.UNAUTHORIZED
+    assert response.json() == {'detail': 'Could not validate credentials'}

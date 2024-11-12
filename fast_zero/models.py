@@ -20,3 +20,12 @@ class User:
     updated_at: Mapped[datetime] = mapped_column(
         init=False, server_onupdate=func.now(), server_default=func.now()
     )
+
+
+""" def set_password(self, password: str):  # pragma: no cover
+    self.password = get_password_hash(password)
+
+
+def check_password(self, password: str):  # pragma: no cover
+    return verify_password(password, self.password)
+ """
