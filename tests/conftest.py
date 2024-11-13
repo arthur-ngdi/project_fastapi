@@ -44,9 +44,9 @@ def user(session):
     pwd = 'secret'
     hashed_pwd = get_password_hash(pwd)
     # string_hashed_pwd = str(hashed_pwd)
-    user = User(username='alice',
-                email='alice@example.com',
-                password=str(hashed_pwd))
+    user = User(
+        username='alice', email='alice@example.com', password=str(hashed_pwd)
+    )
 
     session.add(user)
     session.commit()
@@ -59,8 +59,7 @@ def user(session):
 
 @pytest.fixture
 def token(client, user):
-    response = client.post('/token',
-                           data={'username': user.email,
-                                 'password': user.password}
-                        )
+    response = client.post(
+        '/token', data={'username': user.email, 'password': user.password}
+    )
     return response.json()['access_token']
