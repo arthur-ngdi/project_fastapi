@@ -16,7 +16,7 @@ from .models import User
 
 pwd_context = PasswordHash.recommended()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 def get_password_hash(password: str):
