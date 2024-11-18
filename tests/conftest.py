@@ -1,3 +1,4 @@
+import factory
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -9,6 +10,15 @@ from fast_zero.database import get_session
 from fast_zero.models import User, table_registry
 from fast_zero.security import get_password_hash
 from fast_zero.settings import Settings
+
+
+class UserFactory(factory.Factory):
+    class Meta:
+        model = User
+
+    username = factory.Sequence(lambda n: f'test{n}')
+    email = factory.LazyAttribute(lambda obj: f'{obj.username}@test.com')
+    password = factory.LazyAttribute(lambda obj: f'{obj.username}+senha')
 
 
 @pytest.fixture
@@ -45,14 +55,29 @@ def user(session):
     pwd = 'secret'
     hashed_pwd = get_password_hash(pwd)
     # string_hashed_pwd = str(hashed_pwd)
-    user = User(
-        username='alice', email='alice@example.com', password=hashed_pwd
-    )
+    user = UserFactory(password=hashed_pwd)
     user.clean_password = pwd  # Store the plain password for testing
 
     session.add(user)
     session.commit()
-    # session.refresh(user)
+    session.refresh(user)
+
+    user.clean_password = pwd  # Monkey Patch
+
+    return user
+
+
+@pytest.fixture
+def other_user(session):
+    pwd = 'secret'
+    hashed_pwd = get_password_hash(pwd)
+    # string_hashed_pwd = str(hashed_pwd)
+    user = UserFactory(password=hashed_pwd)
+    user.clean_password = pwd  # Store the plain password for testing
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
 
     user.clean_password = pwd  # Monkey Patch
 
