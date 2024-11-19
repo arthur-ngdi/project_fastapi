@@ -6,7 +6,7 @@ authors = ["Arthur Ferreira Silva"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.11.*"
+python = "3.12.*"
 fastapi = {extras = ["standard"], version = "^0.115.4"}
 sqlalchemy = "^2.0.36"
 pydantic-settings = "^2.6.1"
