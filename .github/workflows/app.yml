@@ -1,5 +1,15 @@
-name: Pipeline
-on: [push, pull_request]
+name: Pipeline Fast_Zero
+on:
+    push:
+      branches:
+        - main
+    pull_request:
+      branches:
+        - main
+
+    schedule:
+      - cron: "1 * * * *"  
+  
 
 jobs:
     test:
